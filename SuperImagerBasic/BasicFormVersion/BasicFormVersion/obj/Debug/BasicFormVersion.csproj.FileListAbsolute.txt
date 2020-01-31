@@ -1,0 +1,9 @@
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerBasic\BasicFormVersion\BasicFormVersion\bin\Debug\BasicFormVersion.exe.config
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerBasic\BasicFormVersion\BasicFormVersion\bin\Debug\BasicFormVersion.exe
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerBasic\BasicFormVersion\BasicFormVersion\bin\Debug\BasicFormVersion.pdb
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerBasic\BasicFormVersion\BasicFormVersion\obj\Debug\BasicFormVersion.csprojAssemblyReference.cache
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerBasic\BasicFormVersion\BasicFormVersion\obj\Debug\BasicFormVersion.Form1.resources
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerBasic\BasicFormVersion\BasicFormVersion\obj\Debug\BasicFormVersion.Properties.Resources.resources
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerBasic\BasicFormVersion\BasicFormVersion\obj\Debug\BasicFormVersion.csproj.GenerateResource.cache
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerBasic\BasicFormVersion\BasicFormVersion\obj\Debug\BasicFormVersion.exe
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerBasic\BasicFormVersion\BasicFormVersion\obj\Debug\BasicFormVersion.pdb
