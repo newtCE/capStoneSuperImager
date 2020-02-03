@@ -64,24 +64,15 @@ namespace BasicFormVersion
         {
             //inputAgentDirectoryList.Add(new DirectoryInfo(@"C:\superTest\directory01"));
             //inputAgentDirectoryList.Add(new DirectoryInfo(@"C:\superTest\directory02"));
-            //inputAgentDirectoryList.Add(new DirectoryInfo(@"C:\superTest\directory03"));
-            //inputAgentDirectoryList.Add(new DirectoryInfo(@"C:\superTest\directory02"));
-            //inputAgentDirectoryList.Add(new DirectoryInfo(@"C:\superTest\directory02"));
-            //inputAgentDirectoryList.Add(new DirectoryInfo(@"C:\superTest\directory02"));
-            //inputAgentDirectoryList.Add(new DirectoryInfo(@"C:\superTest\directory02"));
-            //inputAgentDirectoryList.Add(new DirectoryInfo(@"C:\superTest\directory03"));
             if (inputAgentDirectoryList.Count>1)
             {
-
                 DirectoryInfo directory = inputAgentDirectoryList[0];
                 if (directory != null)
                 {
-                    FileInfo[] files = directory.GetFiles();
-                    
+                    FileInfo[] files = directory.GetFiles(); 
                     int agentCount = inputAgentDirectoryList.Count;
                     CombineImages(files, agentCount);
                 }
-
             }
         }
         private void CombineImages(FileInfo[] files, int agentCount)
@@ -137,20 +128,50 @@ namespace BasicFormVersion
                     else
                     {
                         DirectoryInfo inputCandidate = new DirectoryInfo(addAgentBrowser.SelectedPath);
-                        ValidateInputAgentProcess(inputCandidate.ToString(),templateCount, templateWidth, templateHeight);
+                        if(ValidateInputAgentProcess(inputCandidate.ToString(),templateCount, templateWidth, templateHeight)==true)
+                        {
+                            inputAgentDirectoryList.Add(new DirectoryInfo(addAgentBrowser.SelectedPath));
+                        }
                     }
                 }
             }
         }
-
-        public void ValidateInputAgentProcess(string inputDirectoryToCheck, int agentOneFileCount, int xWidth, int yHeight)
+        public bool ValidateAgainstDuplicateDirectories(string inputDirectoryToCheck)
         {
-            if (ValidateInputAgentFileCount(inputDirectoryToCheck, agentOneFileCount) == true)
-            {
-                if (ValidateInputAgentFileDimensions(inputDirectoryToCheck, xWidth, yHeight) == true)
+            DirectoryInfo directoryToValidate = new DirectoryInfo(inputDirectoryToCheck);
+            foreach (DirectoryInfo inputDirectory in inputAgentDirectoryList)
+            {              
+                if (directoryToValidate.FullName==inputDirectory.FullName)
                 {
-                    //directory will be good to use
+                    return false; //we've found a duplicate directory
                 }
+            }
+            return true; //no exact matches so we are not a duplicate
+        }
+        public bool ValidateInputAgentProcess(string inputDirectoryToCheck, int agentOneFileCount, int xWidth, int yHeight)
+        {
+            if (ValidateAgainstDuplicateDirectories(inputDirectoryToCheck) == true)
+            {
+                if (ValidateInputAgentFileCount(inputDirectoryToCheck, agentOneFileCount) == true)
+                {
+                    if (ValidateInputAgentFileDimensions(inputDirectoryToCheck, xWidth, yHeight) == true)
+                    {
+                        //directory will be good to use
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
             }
 
         }
