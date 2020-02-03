@@ -23,7 +23,42 @@ namespace BasicFormVersion
 
         }
         List<DirectoryInfo> inputAgentDirectoryList = new List<DirectoryInfo>();
+        int templateWidth;
+        int templateHeight;
+        int templateCount;
 
+        public bool ValidateTemplate(string inputDirectoryToCheck)
+        {
+            //check to make sure all images in template directory share the same pixel dimensions
+            bool haveChecked = false;
+            var fCount = Directory.GetFiles(inputDirectoryToCheck, "*", SearchOption.TopDirectoryOnly);
+            foreach (var file in fCount)
+            {
+                var bmp = System.Drawing.Image.FromFile(file);
+                if (haveChecked == false)
+                {
+                    //set the template dimesions to first file
+                    haveChecked = true;
+                    templateHeight = bmp.Height;
+                    templateWidth = bmp.Width;
+                    templateCount = fCount.Length;
+                }
+                else
+                {
+                    //this file isn't the first check dimensions against template
+                    if (bmp.Height==templateHeight&&bmp.Width==bmp.Width)
+                    {
+                        //do nothing, this image met criteria
+                    }
+                    else
+                    {
+                        //this won't work as a template directory send a notice
+                        return false;
+                    }
+                }
+            }
+            return true;    //all images had the same dimensions, we are cleared to be a template
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -88,14 +123,74 @@ namespace BasicFormVersion
             {
                 if (addAgentBrowser.ShowDialog() == DialogResult.OK)
                 {
-                    inputAgentDirectoryList.Add(new DirectoryInfo(addAgentBrowser.SelectedPath));
-                    //txtPath.Text = fbd.SelectedPath;
-                    //foreach (string item in Directory.GetFiles(fbd.SelectedPath))
-                    //{
-                    //}
-
+                    if (inputAgentDirectoryList.Count == 0)
+                    {
+                        if (ValidateTemplate(addAgentBrowser.SelectedPath) == true)
+                        {
+                            inputAgentDirectoryList.Add(new DirectoryInfo(addAgentBrowser.SelectedPath));
+                        }
+                        else
+                        {
+                            //this cannot be our template due to validation failure
+                        }
+                    }
+                    else
+                    {
+                        DirectoryInfo inputCandidate = new DirectoryInfo(addAgentBrowser.SelectedPath);
+                        ValidateInputAgentProcess(inputCandidate.ToString(),templateCount, templateWidth, templateHeight);
+                    }
                 }
             }
         }
+
+        public void ValidateInputAgentProcess(string inputDirectoryToCheck, int agentOneFileCount, int xWidth, int yHeight)
+        {
+            if (ValidateInputAgentFileCount(inputDirectoryToCheck, agentOneFileCount) == true)
+            {
+                if (ValidateInputAgentFileDimensions(inputDirectoryToCheck, xWidth, yHeight) == true)
+                {
+                    //directory will be good to use
+                }
+            }
+
+        }
+        public bool ValidateInputAgentFileCount(string inputDirectoryToCheck, int templateCount)
+        {
+            //input directory to check has to come in as a string to be used as a paramenter for a method
+            //string currentDirectoryString = inputDirectoryToCheck.ToString();
+            //is how one would turn a directory into a string that describes itself
+            int fCount = Directory.GetFiles(inputDirectoryToCheck, "*", SearchOption.TopDirectoryOnly).Length;
+            if (fCount == templateCount)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool ValidateInputAgentFileDimensions(string inputDirectoryToCheck, int xWidth, int yHeight)
+        {
+            //input directory to check has to come in as a string to be used as a paramenter for a method
+            var fCount = Directory.GetFiles(inputDirectoryToCheck, "*", SearchOption.TopDirectoryOnly);
+            foreach (var file in fCount)
+            {
+                //Windows.Storage.FileProperties.BasicProperties fileToCheck =
+                //await file.GetBasicPropertiesAsync();
+                var bmp = System.Drawing.Image.FromFile(file);
+                if (bmp.Width == xWidth && bmp.Height == yHeight)
+                {
+                    //meets specifications so continue
+                }
+                else
+                {
+                    //failed to match height
+                    return false;
+                }
+            }
+            // all matched so we are good
+            return true;
+        }
+
     }
 }
