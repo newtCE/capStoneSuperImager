@@ -1,19 +1,24 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+//using System.Security.Policy;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BasicFormVersion
 {
-    public partial class Form1 : Form
+    public partial class SICA : Form
     {
-        public Form1()
+        public SICA()
         {
             InitializeComponent();
         }
@@ -23,9 +28,50 @@ namespace BasicFormVersion
 
         }
         List<DirectoryInfo> inputAgentDirectoryList = new List<DirectoryInfo>();
+        string outputTarget;
         int templateWidth;
         int templateHeight;
         int templateCount;
+        bool renderingImage = false;
+        bool notifySlack = false;
+        string renderPassword = "abc123";
+
+        public async Task PostToSlack()
+        {
+            var content = new { text = "Your SICA render has completed!\nResults saved to "+ outputTarget};
+            using (var client = new HttpClient())
+            using (var request = new HttpRequestMessage(HttpMethod.Post, "https://hooks.slack.com/services/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"))
+            {
+                var json = JsonConvert.SerializeObject(content);
+                using (var stringContent = new StringContent(json, Encoding.UTF8, "application/json"))
+                {
+                    request.Content = stringContent;
+                    var response = await client.SendAsync(request);
+                }
+            }
+        }
+
+        public void SetOutputDirectory()
+        {
+            using (FolderBrowserDialog addAgentBrowser = new FolderBrowserDialog() { Description = "Select the Output Directory." })
+            {
+                if (addAgentBrowser.ShowDialog() == DialogResult.OK)
+                {
+                    if (ValidateAgainstDuplicateDirectories(addAgentBrowser.SelectedPath) == true)
+                    {
+                        outputTarget=(addAgentBrowser.SelectedPath);
+                        ListViewItem item = new ListViewItem(addAgentBrowser.SelectedPath.ToString());
+                        OutputList.Clear();
+                        OutputList.Items.Add(item);
+                    }
+                    else
+                    {
+                        //this cannot be our template due to validation failure
+                    }
+                }
+            }
+        }
+
 
         public bool ValidateTemplate(string inputDirectoryToCheck)
         {
@@ -64,43 +110,60 @@ namespace BasicFormVersion
         {
             //inputAgentDirectoryList.Add(new DirectoryInfo(@"C:\superTest\directory01"));
             //inputAgentDirectoryList.Add(new DirectoryInfo(@"C:\superTest\directory02"));
-            if (inputAgentDirectoryList.Count>1)
+            if (inputAgentDirectoryList.Count>1&&renderingImage==false)
             {
                 DirectoryInfo directory = inputAgentDirectoryList[0];
                 if (directory != null)
                 {
                     FileInfo[] files = directory.GetFiles(); 
                     int agentCount = inputAgentDirectoryList.Count;
+                    renderingImage = true;
                     CombineImages(files, agentCount);
                 }
             }
         }
         private void CombineImages(FileInfo[] files, int agentCount)
         {
-            string outputTarget = @"C:\superTest\resultDirectory";
-            //this sets what will be the 'canvas size' of individual output imgs
-            foreach (FileInfo file in files)//for every image in our first folder perform ops
+            if (PasswordField.Text == renderPassword)
             {
-                Image img = Image.FromFile(inputAgentDirectoryList[0]+"/"+(file.Name));//this gets entire address
-                int targetWidth = img.Width * agentCount;
-                int targetHeight = img.Height;
-                float pixelResHorizontal = img.HorizontalResolution;
-                float pixelResVertical = img.VerticalResolution;
-                img.Dispose();
-                
-                Bitmap compositedRender = new Bitmap(targetWidth, targetHeight); //create super image based on settings
-                compositedRender.SetResolution(pixelResHorizontal, pixelResVertical);
-                Graphics render = Graphics.FromImage(compositedRender);             
-                render.Clear(SystemColors.AppWorkspace);
-                for (int i = 0; i < agentCount; i++)//do this for however many directories or 'agents' are active
+                //string outputTarget = @"C:\superTest\resultDirectory";
+                //this sets what will be the 'canvas size' of individual output imgs
+                foreach (FileInfo file in files)//for every image in our first folder perform ops
+                {
+                    Image img = Image.FromFile(inputAgentDirectoryList[0] + "/" + (file.Name));//this gets entire address
+                    int targetWidth = img.Width * agentCount;
+                    int targetHeight = img.Height;
+                    float pixelResHorizontal = img.HorizontalResolution;
+                    float pixelResVertical = img.VerticalResolution;
+                    img.Dispose();
+
+                    Bitmap compositedRender = new Bitmap(targetWidth, targetHeight); //create super image based on settings
+                    compositedRender.SetResolution(pixelResHorizontal, pixelResVertical);
+                    Graphics render = Graphics.FromImage(compositedRender);
+                    render.Clear(SystemColors.AppWorkspace);
+                    for (int i = 0; i < agentCount; i++)//do this for however many directories or 'agents' are active
                     {
-                        Image imgComp = Image.FromFile(inputAgentDirectoryList[i]+"/"+(file.Name));//current directory
+                        Image imgComp = Image.FromFile(inputAgentDirectoryList[i] + "/" + (file.Name));//current directory
                         render.DrawImage(imgComp, new Point(imgComp.Width * i, 0));
                         imgComp.Dispose();
                     }
-                render.Dispose();
-                compositedRender.Save(outputTarget + "/" + file.Name, System.Drawing.Imaging.ImageFormat.Png);
-                compositedRender.Dispose();
+                    render.Dispose();
+                    compositedRender.Save(outputTarget + "/" + file.Name, System.Drawing.Imaging.ImageFormat.Png);
+                    compositedRender.Dispose();
+
+                }
+                renderingImage = false;
+                PasswordField.Text = "";
+                if (notifySlack == true)
+                {
+                    PostToSlack();
+                }
+            }
+            else
+            {
+                AppNotice errorMessage = new AppNotice("Incorrect or No Password entered. Render Aborted.");
+                errorMessage.Show();
+                renderingImage = false;
             }
         }
 
@@ -119,6 +182,8 @@ namespace BasicFormVersion
                         if (ValidateTemplate(addAgentBrowser.SelectedPath) == true)
                         {
                             inputAgentDirectoryList.Add(new DirectoryInfo(addAgentBrowser.SelectedPath));
+                            ListViewItem item = new ListViewItem(addAgentBrowser.SelectedPath.ToString());
+                            AgentViewList.Items.Add(item);
                         }
                         else
                         {
@@ -131,6 +196,8 @@ namespace BasicFormVersion
                         if(ValidateInputAgentProcess(inputCandidate.ToString(),templateCount, templateWidth, templateHeight)==true)
                         {
                             inputAgentDirectoryList.Add(new DirectoryInfo(addAgentBrowser.SelectedPath));
+                            ListViewItem item = new ListViewItem(addAgentBrowser.SelectedPath.ToString());
+                            AgentViewList.Items.Add(item);
                         }
                     }
                 }
@@ -161,16 +228,22 @@ namespace BasicFormVersion
                     }
                     else
                     {
+                        AppNotice errorMessage = new AppNotice("Directory not assigned due to directory containing files that do not match the pixel dimensions defined by previous directories.\nOnly images with matching dimensions are allowed to be components.");
+                        errorMessage.Show();
                         return false;
                     }
                 }
                 else
                 {
+                    AppNotice errorMessage = new AppNotice("Directory not assigned due to file count mismatch. Check to be sure all intended image components are in the directory.");
+                    errorMessage.Show();
                     return false;
                 }
             }
             else
             {
+                AppNotice errorMessage = new AppNotice("Directory not assigned. Duplicate directories prohibited.");
+                errorMessage.Show();
                 return false;
             }
 
@@ -213,5 +286,43 @@ namespace BasicFormVersion
             return true;
         }
 
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void SetOutput_Click(object sender, EventArgs e)
+        {
+            SetOutputDirectory();
+        }
+
+        private void SlackCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (notifySlack == false)
+            {
+                notifySlack = true;
+            }
+            else
+            {
+                notifySlack = false;
+            }
+            
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            PasswordField.Focus();
+        }
+
+        private void PasswordField_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            inputAgentDirectoryList.Clear();
+            AgentViewList.Clear();
+        }
     }
 }

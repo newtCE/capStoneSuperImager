@@ -42,3 +42,5 @@ C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\SuperIm
 C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\SuperImager\obj\x86\Debug\MultipleQualifiersPerDimensionFound.txt
 C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\SuperImager\obj\x86\Debug\ProjectArchitectures.txt
 C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\SuperImager\obj\x86\Debug\.winmd_cache\$Microsoft.UI.Xaml.Markup.winmd_636885526160000000.json
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\SuperImager\bin\x86\Debug\System.Drawing.Common.dll
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\SuperImager\obj\x86\Debug\FxResources.System.Drawing.Common.SR.resw

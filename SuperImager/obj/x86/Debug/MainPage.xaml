@@ -8,29 +8,22 @@
     mc:Ignorable="d"
     Background="Black">
 
-    <Grid>
-        <RelativePanel>
-            <StackPanel x:ConnectionId='2' x:Name="Customer" Margin="20">
-                <TextBox x:ConnectionId='8' x:Name="CustomerName" Header= "Customer Name" Margin="0,24,0,0" HorizontalAlignment="Left" />
-                <TextBox x:ConnectionId='9' x:Name="Address" Header="Address" PlaceholderText="Address" Margin="0,24,0,0" HorizontalAlignment="Left" />
-                <TextBox x:ConnectionId='10' x:Name="Address2" Margin="0,24,0,0" PlaceholderText="Address 2" HorizontalAlignment="Left" />
-                <RelativePanel>
-                    <TextBox x:ConnectionId='11' x:Name="City" PlaceholderText="City" Margin="0,24,0,0" HorizontalAlignment="Left" />
-                    <ComboBox x:ConnectionId='12' x:Name="State" PlaceholderText="State" Margin="24,24,0,0" RelativePanel.RightOf="City">
-                        <!--List of valid states-->
-                    </ComboBox>
-                </RelativePanel>
-            </StackPanel>
-            <StackPanel x:ConnectionId='3' x:Name="Associate" Margin="20" RelativePanel.Below="Customer">
-                <TextBox x:ConnectionId='5' x:Name="AssociateName" Header= "Associate" Margin="0,24,0,0" HorizontalAlignment="Left" />
-                <DatePicker x:ConnectionId='6' x:Name="TargetInstallDate" Header="Target install Date" HorizontalAlignment="Left" Margin="0,24,0,0"></DatePicker>
-                <TimePicker x:ConnectionId='7' x:Name="InstallTime" Header="Install Time" HorizontalAlignment="Left" Margin="0,24,0,0"></TimePicker>
-            </StackPanel>
-            <StackPanel x:ConnectionId='4' x:Name="Save" Orientation="Horizontal" RelativePanel.Below="Associate">
-                <Button Content="Save" Margin="24" />
-                <Button Content="Cancel" Margin="24" />
-            </StackPanel>
-        </RelativePanel>
-    </Grid>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" Height="Auto">
+            <TextBlock>SUPER IMAGE COMPOSITOR FOR AUTOMATION AND BATCH REDNERINGS</TextBlock>
+            <!--<Rectangle Fill="Coral" Height="64"></Rectangle>
+            <Rectangle Fill="Coral" Height="64"></Rectangle>-->
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button x:ConnectionId='2' Content="ADD INPUT DIRECTORY" Width="256" Height="128" Margin="8"                     />
+            <Button Content="REMOVE INPUT DIRECTORY" Width="256" Height="128" Margin="8"/>
+            <Button x:ConnectionId='3' Content="SET OUTPUT DIRECTORY" Width="256" Height="128" Margin="8"                     />
+            <Button x:ConnectionId='4' x:Name="CreateComposite" Content="CREATE COMPOSITE STRIP" Width="256" Height="128" Margin="8"/>
+            <ToggleSwitch RequestedTheme="Dark">
+                <ToggleSwitch.OffContent>Notify Via Slack OFF</ToggleSwitch.OffContent>
+                <ToggleSwitch.OnContent>Notify Via Slack ON</ToggleSwitch.OnContent>
+            </ToggleSwitch>
+        </StackPanel>
+    </StackPanel>
 </Page>
 
