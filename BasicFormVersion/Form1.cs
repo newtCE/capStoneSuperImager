@@ -34,6 +34,8 @@ namespace BasicFormVersion
         int templateCount;
         bool renderingImage = false;
         bool notifySlack = false;
+        bool generateScript = false;
+        bool openDirectoryOnCompletion = false;
         string renderPassword = "abc123";
 
         public async Task PostToSlack()
@@ -154,9 +156,17 @@ namespace BasicFormVersion
                 }
                 renderingImage = false;
                 PasswordField.Text = "";
+                if (generateScript == true)
+                {
+                    GenerateSortingJavaScriptFile(templateWidth, agentCount);
+                }
                 if (notifySlack == true)
                 {
-                    PostToSlack();
+                    PostToSlack();             
+                }
+                if (openDirectoryOnCompletion == true)
+                {
+                    System.Diagnostics.Process.Start(outputTarget);
                 }
             }
             else
@@ -165,10 +175,6 @@ namespace BasicFormVersion
                 errorMessage.Show();
                 renderingImage = false;
             }
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -291,7 +297,7 @@ namespace BasicFormVersion
             
         }
 
-        private void SetOutput_Click(object sender, EventArgs e)
+        private void SetOutput_Click(object sender, EventArgs e)//set output directory
         {
             SetOutputDirectory();
         }
@@ -307,9 +313,9 @@ namespace BasicFormVersion
                 notifySlack = false;
             }
             
-        }
+        }//toggle slack notification
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void button1_Click_1(object sender, EventArgs e)//set focus to password
         {
             PasswordField.Focus();
         }
@@ -319,10 +325,62 @@ namespace BasicFormVersion
 
         }
 
-        private void button1_Click_2(object sender, EventArgs e)
+        private void button1_Click_2(object sender, EventArgs e)//clear
         {
             inputAgentDirectoryList.Clear();
             AgentViewList.Clear();
+        }
+        private void GenerateSortingJavaScriptFile(int horizontalOffsetValue, int agentCount)
+        {
+            string agentCountString = agentCount.ToString();
+            string horizontalOffsetValueString = horizontalOffsetValue.ToString();
+            List<string> lines =new List<string> {
+                "var docRef = app.activeDocument;",
+                "docRef.activeLayer.name=\"0\";",
+                "var currentLayer=docRef.activeLayer.duplicate(docRef.activeLayer,ElementPlacement.PLACEBEFORE);"
+            };
+            for (int i = 1; i < agentCount; i++)
+            {
+                string currentLayerName = (agentCount-i).ToString();
+                lines.Add("docRef.activeLayer = currentLayer;");
+                lines.Add("docRef.activeLayer.name=\"" + currentLayerName + "\";");
+                lines.Add("currentLayer.applyOffset(UnitValue(\""+ horizontalOffsetValueString+"px\"),0,OffsetUndefinedAreas.WRAPAROUND);");
+                if (i != agentCount - 1)
+                {
+                    lines.Add("currentLayer=currentLayer.duplicate(currentLayer,ElementPlacement.PLACEAFTER);");
+                }
+            }
+            lines.Add("docRef.resizeCanvas(docRef.width/" + agentCountString + ", docRef.height, AnchorPosition.TOPLEFT);");
+            lines.Add("var bounds = [0, 0, docRef.width, docRef.height];");
+            lines.Add("docRef.crop(bounds);");
+            // WriteAllLines creates a file, writes a collection of strings to the file,
+            // and then closes the file.  You do NOT need to call Flush() or Close().
+            System.IO.File.WriteAllLines(outputTarget+"/Sort_Layers_"+horizontalOffsetValueString+"px_"+agentCountString+"_Layers.jsx", lines);
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)//generate JavaScript Sorting
+        {
+            if (generateScript == false)
+            {
+                generateScript = true;
+            }
+            else
+            {
+                generateScript = false;
+            }
+        }
+
+        private void openDirectoryCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (openDirectoryOnCompletion == false)
+            {
+                openDirectoryOnCompletion = true;
+            }
+            else
+            {
+                openDirectoryOnCompletion = false;
+            }
         }
     }
 }

@@ -40,6 +40,8 @@
             this.PasswordField = new System.Windows.Forms.TextBox();
             this.PasswordFocus = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.scriptButton = new System.Windows.Forms.CheckBox();
+            this.openDirectoryCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // CreateImage
@@ -53,7 +55,7 @@
             this.CreateImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreateImage.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CreateImage.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.CreateImage.Location = new System.Drawing.Point(848, 456);
+            this.CreateImage.Location = new System.Drawing.Point(848, 448);
             this.CreateImage.Margin = new System.Windows.Forms.Padding(0);
             this.CreateImage.Name = "CreateImage";
             this.CreateImage.Size = new System.Drawing.Size(384, 80);
@@ -118,7 +120,7 @@
             this.AgentViewList.Location = new System.Drawing.Point(32, 136);
             this.AgentViewList.Margin = new System.Windows.Forms.Padding(0);
             this.AgentViewList.Name = "AgentViewList";
-            this.AgentViewList.Size = new System.Drawing.Size(384, 400);
+            this.AgentViewList.Size = new System.Drawing.Size(384, 287);
             this.AgentViewList.TabIndex = 3;
             this.AgentViewList.UseCompatibleStateImageBehavior = false;
             this.AgentViewList.View = System.Windows.Forms.View.List;
@@ -152,11 +154,12 @@
             this.SlackCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SlackCheck.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SlackCheck.ForeColor = System.Drawing.Color.White;
-            this.SlackCheck.Location = new System.Drawing.Point(717, 456);
+            this.SlackCheck.Location = new System.Drawing.Point(643, 543);
             this.SlackCheck.Name = "SlackCheck";
-            this.SlackCheck.Size = new System.Drawing.Size(128, 80);
+            this.SlackCheck.Size = new System.Drawing.Size(189, 80);
             this.SlackCheck.TabIndex = 5;
-            this.SlackCheck.Text = "Notify Slack";
+            this.SlackCheck.Text = "ALERT SLACK";
+            this.SlackCheck.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.SlackCheck.UseVisualStyleBackColor = true;
             this.SlackCheck.CheckedChanged += new System.EventHandler(this.SlackCheck_CheckedChanged);
             // 
@@ -207,14 +210,48 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.button1.Location = new System.Drawing.Point(428, 456);
+            this.button1.Location = new System.Drawing.Point(32, 448);
             this.button1.Margin = new System.Windows.Forms.Padding(0);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(128, 80);
+            this.button1.Size = new System.Drawing.Size(384, 80);
             this.button1.TabIndex = 8;
             this.button1.Text = "CLEAR INPUTS";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click_2);
+            // 
+            // scriptButton
+            // 
+            this.scriptButton.Appearance = System.Windows.Forms.Appearance.Button;
+            this.scriptButton.FlatAppearance.BorderColor = System.Drawing.Color.Coral;
+            this.scriptButton.FlatAppearance.BorderSize = 6;
+            this.scriptButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.scriptButton.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scriptButton.ForeColor = System.Drawing.Color.White;
+            this.scriptButton.Location = new System.Drawing.Point(643, 448);
+            this.scriptButton.Name = "scriptButton";
+            this.scriptButton.Size = new System.Drawing.Size(189, 80);
+            this.scriptButton.TabIndex = 9;
+            this.scriptButton.Text = "GENERATE SORTING SCRIPT";
+            this.scriptButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.scriptButton.UseVisualStyleBackColor = true;
+            this.scriptButton.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // openDirectoryCheckBox
+            // 
+            this.openDirectoryCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.openDirectoryCheckBox.FlatAppearance.BorderColor = System.Drawing.Color.Coral;
+            this.openDirectoryCheckBox.FlatAppearance.BorderSize = 6;
+            this.openDirectoryCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.openDirectoryCheckBox.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.openDirectoryCheckBox.ForeColor = System.Drawing.Color.White;
+            this.openDirectoryCheckBox.Location = new System.Drawing.Point(848, 543);
+            this.openDirectoryCheckBox.Name = "openDirectoryCheckBox";
+            this.openDirectoryCheckBox.Size = new System.Drawing.Size(384, 80);
+            this.openDirectoryCheckBox.TabIndex = 10;
+            this.openDirectoryCheckBox.Text = "OPEN OUTPUT DIRECTORY WHEN COMPLETE";
+            this.openDirectoryCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.openDirectoryCheckBox.UseVisualStyleBackColor = true;
+            this.openDirectoryCheckBox.CheckedChanged += new System.EventHandler(this.openDirectoryCheckBox_CheckedChanged);
             // 
             // SICA
             // 
@@ -223,7 +260,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(1264, 641);
+            this.ClientSize = new System.Drawing.Size(1264, 649);
+            this.Controls.Add(this.openDirectoryCheckBox);
+            this.Controls.Add(this.scriptButton);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.PasswordFocus);
             this.Controls.Add(this.PasswordField);
@@ -258,6 +297,8 @@
         private System.Windows.Forms.TextBox PasswordField;
         private System.Windows.Forms.Button PasswordFocus;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox scriptButton;
+        private System.Windows.Forms.CheckBox openDirectoryCheckBox;
     }
 }
 

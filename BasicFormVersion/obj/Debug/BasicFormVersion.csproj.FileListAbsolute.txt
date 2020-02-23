@@ -12,3 +12,17 @@ C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerBasic\BasicFormVersion\
 C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerBasic\BasicFormVersion\BasicFormVersion\bin\Debug\Newtonsoft.Json.xml
 C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerBasic\BasicFormVersion\BasicFormVersion\obj\Debug\BasicFormVersion.csproj.CopyComplete
 C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerBasic\BasicFormVersion\BasicFormVersion\obj\Debug\BasicFormVersion.PasswordPrompt.resources
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\BasicFormVersion\bin\Debug\BasicFormVersion.exe.config
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\BasicFormVersion\bin\Debug\BasicFormVersion.exe
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\BasicFormVersion\bin\Debug\BasicFormVersion.pdb
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\BasicFormVersion\bin\Debug\Newtonsoft.Json.dll
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\BasicFormVersion\bin\Debug\Newtonsoft.Json.xml
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\BasicFormVersion\obj\Debug\BasicFormVersion.csprojAssemblyReference.cache
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\BasicFormVersion\obj\Debug\BasicFormVersion.AppNotice.resources
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\BasicFormVersion\obj\Debug\BasicFormVersion.SICA.resources
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\BasicFormVersion\obj\Debug\BasicFormVersion.PasswordPrompt.resources
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\BasicFormVersion\obj\Debug\BasicFormVersion.Properties.Resources.resources
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\BasicFormVersion\obj\Debug\BasicFormVersion.csproj.GenerateResource.cache
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\BasicFormVersion\obj\Debug\BasicFormVersion.csproj.CopyComplete
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\BasicFormVersion\obj\Debug\BasicFormVersion.exe
+C:\Users\info\Desktop\DevCodeHafnium\capStone\SuperImagerUWP\SuperImager\BasicFormVersion\obj\Debug\BasicFormVersion.pdb
